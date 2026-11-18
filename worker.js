@@ -1,0 +1,10 @@
+// Cloudflare Worker. Configure GEMINI_API_KEY como Secret; nunca coloque a chave no HTML.
+export default {async fetch(request,env){
+ const origin=request.headers.get('Origin')||'';const allowed=env.ALLOWED_ORIGIN||'https://keitygiasson.github.io';const headers={'Access-Control-Allow-Origin':allowed,'Access-Control-Allow-Methods':'POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Content-Type':'application/json'};
+ if(request.method==='OPTIONS')return new Response(null,{headers});
+ if(request.method!=='POST'||origin!==allowed)return new Response(JSON.stringify({error:'Acesso não permitido'}),{status:403,headers});
+ try{const body=await request.json();const question=String(body.question||'').slice(0,500);if(!question)return new Response(JSON.stringify({error:'Pergunta vazia'}),{status:400,headers});
+ const d=body.data||{};const compact={total:d.total,orders:d.orders,items:d.items,ticket:d.ticket,start:d.start,end:d.end,forecast:d.forecast,forecast_month:d.forecast_month,monthly:d.monthly,top:d.top,sizes:d.sizes,days:d.days};
+ const prompt='Você é um assistente acadêmico de análise de vendas. Responda em português brasileiro com base SOMENTE nos dados JSON abaixo. Não invente custos, lucros, causalidade ou certezas sobre previsão. Se faltar informação, declare isso. Seja claro e conciso. Dados: '+JSON.stringify(compact)+'\nPergunta: '+question;
+ const model=env.GEMINI_MODEL||'gemini-2.5-flash';const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+encodeURIComponent(model)+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':env.GEMINI_API_KEY},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:600}})});const out=await res.json();if(!res.ok)throw new Error('Falha no provedor de IA');const answer=out.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'Sem resposta.';return new Response(JSON.stringify({answer}),{headers});
+ }catch(e){return new Response(JSON.stringify({error:'Falha na consulta'}),{status:502,headers})}}};

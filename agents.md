@@ -1,15 +1,9 @@
-# agents.md — Portfólio acadêmico
+# AGENTS — orientações do portfólio
 
-## Objetivo
-Site pessoal de Keity Suelyn Giasson Da Silva, estudante de Ciências Contábeis, para apresentar quatro projetos solicitados pelo professor.
-
-## Regras
-- Usar exclusivamente dados fornecidos para indicadores da pizzaria.
-- Não apresentar previsão como certeza; excluir mês parcial do treinamento.
-- Não inventar fontes, notas, avaliações ou credenciais.
-- O chat demonstrativo responde com regras locais; não alegar que é um LLM conectado.
-- Não incluir credenciais em arquivos publicados.
-- Preservar legibilidade, responsividade e acessibilidade.
-
-## Arquivos
-index.html: portfólio e dashboard; dados_resumo.json: agregações; relatorio_estatistico.pdf; apresentacao_vitto.pptx; README.md.
+- Identidade: Keity Suelyn Giasson Da Silva, estudante de Ciências Contábeis na Atitus Educação.
+- Linguagem: português brasileiro, tom acadêmico claro.
+- Dados: base da Pizzaria do Vitto; não inventar indicadores ou inferir lucro a partir de receita.
+- Interface: acessível, responsiva, com dados explicados e fontes identificadas.
+- Previsão: informar método, competência parcial e limitações.
+- IA: distinguir respostas locais de respostas geradas por LLM; não expor credenciais no repositório.
+- Entrega: relatório, slides, dashboard, wiki e documentação.
