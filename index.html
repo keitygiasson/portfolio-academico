@@ -34,7 +34,9 @@ function drawChart(id,type,labels,values){if(charts[id])charts[id].destroy();cha
 function renderDashboard(){const rows=selectedMonths();const total=rows.reduce((s,r)=>s+r.revenue,0),orders=rows.reduce((s,r)=>s+r.orders,0),items=rows.reduce((s,r)=>s+r.items,0);
 document.getElementById('revenue').textContent=money(total);document.getElementById('orders').textContent=integer(orders);document.getElementById('ticket').textContent=orders?money(total/orders):'—';document.getElementById('items').textContent=integer(items);
 const top=sumGroups(rows,'top').slice(0,8),sizes=sumGroups(rows,'sizes'),days=sumGroups(rows,'days').sort((a,b)=>weekdayOrder.indexOf(a.name)-weekdayOrder.indexOf(b.name));
-drawChart('monthly','line',rows.map(r=>r.month),rows.map(r=>r.revenue));drawChart('top','bar',top.map(r=>r.name),top.map(r=>r.value));drawChart('sizes','doughnut',sizes.map(r=>r.name),sizes.map(r=>r.value));drawChart('days','bar',days.map(r=>r.name),days.map(r=>r.value));
+drawChart('monthly','line',
+  rows.filter(r=>r.month!=='2026-08').map(r=>r.month),
+  rows.filter(r=>r.month!=='2026-08').map(r=>r.revenue));drawChart('top','bar',top.map(r=>r.name),top.map(r=>r.value));drawChart('sizes','doughnut',sizes.map(r=>r.name),sizes.map(r=>r.value));drawChart('days','bar',days.map(r=>r.name),days.map(r=>r.value));
 document.getElementById('filterSummary').textContent=rows.length+' mês(es) selecionado(s). '+(rows.some(r=>r.month==='2026-08')?'Atenção: agosto de 2026 contém dados somente até 03/08.':'');
 }
 periodFilter.addEventListener('change',refreshMonths);monthFilter.addEventListener('change',renderDashboard);document.getElementById('clearFilters').addEventListener('click',()=>{periodFilter.value='all';monthFilter.value='all';refreshMonths()});
